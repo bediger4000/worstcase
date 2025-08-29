@@ -22,7 +22,7 @@ func main() {
 
 	Print(hd)
 
-	node := createWorstCase(hd)
+	node, _ := createWorstCase(hd)
 	Print(node)
 
 	nl := recursiveMergeSort(node)
@@ -40,39 +40,36 @@ func main() {
 	}
 }
 
-func createWorstCase(node *Node) *Node {
+func createWorstCase(node *Node) (*Node, *Node) {
 	if node.Next == nil {
-		return node
+		return node, node
 	}
 
 	left, right := alternateSplit(node)
 	if left == nil {
-		return right
+		return right, right
 	}
 	if right == nil {
-		return left
+		return left, left
 	}
 
 	if left.Next == nil && right.Next == nil {
 		if left.Data > right.Data {
 			left.Next = right
-			return left
+			return left, right
 		}
 		right.Next = left
-		return right
+		return right, left
 	}
 
-	left = createWorstCase(left)
-	right = createWorstCase(right)
+	var tailLeft, tailRight *Node
 
-	tail := &left
-	for (*tail).Next != nil {
-		tail = &(*tail).Next
-	}
+	left, tailLeft = createWorstCase(left)
+	right, tailRight = createWorstCase(right)
 
-	(*tail).Next = right
+	tailLeft.Next = right
 
-	return left
+	return left, tailRight
 }
 
 func alternateSplit(node *Node) (*Node, *Node) {
