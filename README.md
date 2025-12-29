@@ -37,7 +37,7 @@ How do you create an adversarial list of length 9?
 
 It seems easiest to do this recursively, starting with an in-order sorted list.
 
-``
+```
 func createWorstCase(list) {
     if len(list) == 1 { return list }
 
